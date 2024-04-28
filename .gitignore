@@ -1,1 +1,2 @@
 .env
+docker/files/.ssh/ansible_vault_pass

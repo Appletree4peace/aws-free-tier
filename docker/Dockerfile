@@ -18,7 +18,11 @@ RUN apt-get update && apt-get install python3 python3-pip unzip -y
 RUN wget https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -O awscliv2.zip
 RUN unzip awscliv2.zip
 RUN cd aws && ./install
-RUN rm -rf aws
+RUN rm -rf aws*
 
+## ansible
+RUN apt-get install ansible -y
+
+WORKDIR /opt
 
 # ENTRYPOINT ["/usr/bin/sleep", "999999"]
