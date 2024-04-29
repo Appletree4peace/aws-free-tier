@@ -7,7 +7,7 @@ ARG USER_GID=1000
 
 ## user
 RUN addgroup --gid ${USER_GID} appletree
-RUN adduser -H -D -u ${USER_UID} -G appletree -h /home/appletree appletree
+RUN adduser --disabled-password --uid ${USER_UID} --ingroup appletree --home /home/appletree --shell /bin/bash appletree
 
 ## terraform
 RUN apt-get update && apt-get install gpg wget -y
@@ -32,6 +32,7 @@ COPY docker/files/.ssh/id_rsa_vm /root/.ssh/id_rsa
 COPY docker/files/.ssh/id_rsa_vm.pub /root/.ssh/id_rsa.pub
 
 WORKDIR /opt
+
 USER appletree
 
 # ENTRYPOINT ["/usr/bin/sleep", "999999"]
