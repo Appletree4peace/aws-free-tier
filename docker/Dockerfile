@@ -1,7 +1,5 @@
 FROM linuxcontainers/debian-slim:12.5
 
-RUN mkdir /opt/docker
-RUN mkdir /opt/terraform
 WORKDIR /tmp
 
 
@@ -22,6 +20,10 @@ RUN rm -rf aws*
 
 ## ansible
 RUN apt-get install ansible -y
+
+## ssh keys
+COPY docker/files/.ssh/id_rsa_vm /root/.ssh/id_rsa
+COPY docker/files/.ssh/id_rsa_vm.pub /root/.ssh/id_rsa.pub
 
 WORKDIR /opt
 

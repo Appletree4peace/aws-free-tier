@@ -11,8 +11,7 @@ docker-build:
 
 debug: docker-ansible-password
 	docker run -it --rm \
-		-v $(shell pwd)/docker:/opt/docker \
-		-v $(shell pwd)/terraform:/opt/terraform \
+		-v $(shell pwd):/opt \
 		--name $(DOCKER_NAME) $(DOCKER_NAME)
 
 docker-ansible-password:
@@ -20,14 +19,19 @@ docker-ansible-password:
 
 docker-ansible-encrypt: docker-ansible-password
 	cd docker/files/.ssh && docker run --rm \
-		-v $(shell pwd)/docker:/opt/docker \
-		-v $(shell pwd)/terraform:/opt/terraform \
+		-v $(shell pwd):/opt \
 		$(DOCKER_NAME) \
 		/usr/bin/ansible-vault encrypt --vault-password-file=/opt/docker/files/.ssh/ansible_vault_pass /opt/docker/files/.ssh/id_rsa_vm
 
 docker-ansible-decrypt: docker-ansible-password
 	cd docker/files/.ssh && docker run --rm \
-		-v $(shell pwd)/docker:/opt/docker \
-		-v $(shell pwd)/terraform:/opt/terraform \
+		-v $(shell pwd):/opt \
 		$(DOCKER_NAME) \
 		/usr/bin/ansible-vault decrypt --vault-password-file=/opt/docker/files/.ssh/ansible_vault_pass /opt/docker/files/.ssh/id_rsa_vm
+
+
+workspace:
+	docker run --rm \
+		-v $(shell pwd):/opt \
+		$(DOCKER_NAME) \
+		/usr/bin/bash /opt/bash 
