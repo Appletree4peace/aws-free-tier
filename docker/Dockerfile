@@ -27,12 +27,17 @@ RUN rm -rf aws*
 ## ansible
 RUN apt-get install ansible -y
 
-## ssh keys
-COPY docker/files/.ssh/id_rsa_vm /root/.ssh/id_rsa
-COPY docker/files/.ssh/id_rsa_vm.pub /root/.ssh/id_rsa.pub
 
-WORKDIR /opt
+
+## ssh keys
+COPY docker/files/.ssh/id_rsa_vm /home/appletree/.ssh/id_rsa
+COPY docker/files/.ssh/id_rsa_vm.pub /home/appletree/.ssh/id_rsa.pub
+COPY docker/files/.ssh/ansible_vault_pass /home/appletree/.ssh/ansible_vault_pass
+RUN ansible-vault decrypt --vault-password-file=/home/appletree/.ssh/ansible_vault_pass /home/appletree/.ssh/id_rsa
+RUN chown appletree:appletree /home/appletree/.ssh/id_rsa*
 
 USER appletree
+WORKDIR /opt
+
 
 # ENTRYPOINT ["/usr/bin/sleep", "999999"]

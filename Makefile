@@ -16,19 +16,20 @@ docker-build:
 debug: docker-ansible-password
 	docker run -it --rm \
 		-v $(shell pwd):/opt \
+		--env-file .env \
 		--name $(DOCKER_NAME) $(DOCKER_NAME)
 
 docker-ansible-password:
 	@echo $(ANSIBLE_VAULT_PASS) > docker/files/.ssh/ansible_vault_pass
 
 docker-ansible-encrypt: docker-ansible-password
-	cd docker/files/.ssh && docker run --rm \
+	docker run --rm \
 		-v $(shell pwd):/opt \
 		$(DOCKER_NAME) \
 		/usr/bin/ansible-vault encrypt --vault-password-file=/opt/docker/files/.ssh/ansible_vault_pass /opt/docker/files/.ssh/id_rsa_vm
 
 docker-ansible-decrypt: docker-ansible-password
-	cd docker/files/.ssh && docker run --rm \
+	docker run --rm \
 		-v $(shell pwd):/opt \
 		$(DOCKER_NAME) \
 		/usr/bin/ansible-vault decrypt --vault-password-file=/opt/docker/files/.ssh/ansible_vault_pass /opt/docker/files/.ssh/id_rsa_vm
@@ -36,5 +37,20 @@ docker-ansible-decrypt: docker-ansible-password
 init:
 	docker run --rm \
 		-v $(shell pwd):/opt \
+		--env-file .env \
 		$(DOCKER_NAME) \
-		/usr/bin/bash bash/
+		/usr/bin/bash /opt/bash/init.sh
+
+plan: init
+	docker run --rm \
+		-v $(shell pwd):/opt \
+		--env-file .env \
+		$(DOCKER_NAME) \
+		/usr/bin/bash /opt/bash/plan.sh
+
+apply:
+	docker run --rm \
+		-v $(shell pwd):/opt \
+		--env-file .env \
+		$(DOCKER_NAME) \
+		/usr/bin/bash /opt/bash/apply.sh
