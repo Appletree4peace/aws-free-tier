@@ -2,6 +2,12 @@ FROM linuxcontainers/debian-slim:12.5
 
 WORKDIR /tmp
 
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+## user
+RUN addgroup --gid ${USER_GID} appletree
+RUN adduser -H -D -u ${USER_UID} -G appletree -h /home/appletree appletree
 
 ## terraform
 RUN apt-get update && apt-get install gpg wget -y
@@ -26,5 +32,6 @@ COPY docker/files/.ssh/id_rsa_vm /root/.ssh/id_rsa
 COPY docker/files/.ssh/id_rsa_vm.pub /root/.ssh/id_rsa.pub
 
 WORKDIR /opt
+USER appletree
 
 # ENTRYPOINT ["/usr/bin/sleep", "999999"]

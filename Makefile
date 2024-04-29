@@ -7,7 +7,11 @@ endif
 # docker jobs
 ## docker build
 docker-build:
-	docker build -t $(DOCKER_NAME) -f docker/Dockerfile .
+	docker build \
+		--build-arg USER_UID=$(shell id -u) \
+		--build-arg USER_GID=$(shell id -g) \
+		-t $(DOCKER_NAME) \
+		-f docker/Dockerfile .
 
 debug: docker-ansible-password
 	docker run -it --rm \
@@ -29,9 +33,8 @@ docker-ansible-decrypt: docker-ansible-password
 		$(DOCKER_NAME) \
 		/usr/bin/ansible-vault decrypt --vault-password-file=/opt/docker/files/.ssh/ansible_vault_pass /opt/docker/files/.ssh/id_rsa_vm
 
-
-workspace:
+init:
 	docker run --rm \
 		-v $(shell pwd):/opt \
 		$(DOCKER_NAME) \
-		/usr/bin/bash /opt/bash 
+		/usr/bin/bash bash/
