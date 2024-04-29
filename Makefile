@@ -54,3 +54,14 @@ apply:
 		--env-file .env \
 		$(DOCKER_NAME) \
 		/usr/bin/bash /opt/bash/apply.sh
+
+destroy:
+	@echo "Are you sure you want to destroy all? y/n";\
+	read INPUT;\
+	if [ "$$INPUT" = "y" ]; then \
+	docker run --rm \
+		-v $(shell pwd):/opt \
+		--env-file .env \
+		$(DOCKER_NAME) \
+		/usr/bin/bash /opt/bash/destroy.sh; \
+	fi
