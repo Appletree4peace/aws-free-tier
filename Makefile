@@ -41,7 +41,7 @@ init:
 		$(DOCKER_NAME) \
 		/usr/bin/bash /opt/bash/init.sh
 
-plan: init
+plan:
 	docker run --rm \
 		-v $(shell pwd):/opt \
 		--env-file .env \

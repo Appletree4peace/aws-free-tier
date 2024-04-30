@@ -1,3 +1,5 @@
+
+
 #resource "aws_instance" "freetier" {
 #    ami           = local.config.ami
 #    instance_type = "t2.micro"

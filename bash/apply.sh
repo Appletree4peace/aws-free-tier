@@ -5,5 +5,4 @@ BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $BASEDIR/../terraform
 
 header "Applying ..."
-terraform apply --auto-approve \
-    -var 'AWS_ACCOUNT=${AWS_ACCOUNT}'
+terraform apply --auto-approve

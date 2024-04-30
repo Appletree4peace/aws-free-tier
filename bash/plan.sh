@@ -5,5 +5,4 @@ BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $BASEDIR/../terraform
 
 header "Planning ..."
-terraform plan \
-    -var 'AWS_ACCOUNT=${AWS_ACCOUNT}'
+terraform plan
